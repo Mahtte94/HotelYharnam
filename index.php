@@ -27,7 +27,7 @@ if (isset($_POST['transfer_code'])) {
       echo "Deposit succesful:$deposit";
 
     } else {
-      
+
       echo "Not enough currency. Required: $totalCost";
 
     }
@@ -57,6 +57,12 @@ if (isset($_POST['transfer_code'])) {
       <input type="checkbox" id="guns" name="guns">
       <label for="rifle">Rifle ($3)</label>
       <input type="checkbox" id="rifle" name="rifle">
+
+      <select name="rooms" id="rooms">
+        <option value="economy">Economy</option>
+        <option value="standard">Standard</option>
+        <option value="luxury">Luxury</option>
+      </select>
   </form>
 </body>
 
