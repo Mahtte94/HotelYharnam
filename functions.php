@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 function isValidUuid(string $uuid): bool
 {
   if (!is_string($uuid) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid) !== 1)) {
@@ -8,7 +11,7 @@ function isValidUuid(string $uuid): bool
 }
 
 
-function sendTransferRequest(string $transferCode, int $totalCost): string
+function sendTransferRequest(string $transferCode, int $totalCost): int
 {
   $url = "https://www.yrgopelago.se/centralbank/transferCode";
 
@@ -36,7 +39,10 @@ function sendTransferRequest(string $transferCode, int $totalCost): string
 
   curl_close($ch);
 
-  return $response;
+  $decodedResponse = json_decode($response, true);
+
+    return $decodedResponse['totalCost'] ?? 0;
+  
 }
 
 

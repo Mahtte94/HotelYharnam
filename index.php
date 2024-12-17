@@ -11,12 +11,29 @@ if (isset($_POST['transfer_code'])) {
   $totalCost = $gunsCost + $rifleCost;
   $user = 'Mahtias';
 
-  
 
-  $response = depositTransfer($user, $transferCode);
+  if (!isValidUuid($transferCode)) {
 
-  echo 'Response: ' . $response;
+    echo "Not valid";
+
+  } else {
+
+    $balance = sendTransferRequest($transferCode, $totalCost);
+
+    if ($balance >= $totalCost && $totalCost != 0) {
+
+      $deposit = depositTransfer($user, $transferCode);
+
+      echo "Deposit succesful:$deposit";
+
+    } else {
+      
+      echo "Not enough currency. Required: $totalCost";
+
+    }
+  }
 }
+
 
 
 ?>
