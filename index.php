@@ -92,7 +92,7 @@ if (isset($_POST['transfer_code'])) {
       
      
 
-      echo $json;
+      
 
       $deposit = depositTransfer($user, $transferCode);
 
@@ -139,40 +139,29 @@ if (isset($_POST['transfer_code'])) {
         ':price' => $roomCost
     ]);
 
+
+    if(isset($features)){
+      foreach($features as $feature){
+      list($name, $cost) = explode(":", $feature);
+      $stmt = $database->prepare("INSERT INTO Features (name, price) VALUES (:name, :price)");
+        $stmt->execute([
+            ':name' => $name,
+            ':price' => $cost
+        ]);
+        $featureId = $database->lastInsertId();
+
+        // Insert Booking_Features relation
+        $stmt = $database->prepare("INSERT INTO Booking_Features (bookingId, featureId, price) VALUES (:bookingId, :featureId, :price)");
+        $stmt->execute([
+            ':bookingId' => $bookingId,
+            ':featureId' => $featureId,
+            ':price' => $cost
+        ]);
+      } 
+    }
+
     
-    if ($gunsCost > 0) {
-        $stmt = $database->prepare("INSERT INTO Features (name, price) VALUES (:name, :price)");
-        $stmt->execute([
-            ':name' => 'Guns',
-            ':price' => 2
-        ]);
-        $featureId = $database->lastInsertId();
-
-        // Insert Booking_Features relation
-        $stmt = $database->prepare("INSERT INTO Booking_Features (bookingId, featureId, price) VALUES (:bookingId, :featureId, :price)");
-        $stmt->execute([
-            ':bookingId' => $bookingId,
-            ':featureId' => $featureId,
-            ':price' => $gunsCost
-        ]);
-    }
-
-    if ($rifleCost > 0) {
-        $stmt = $database->prepare("INSERT INTO Features (name, price) VALUES (:name, :price)");
-        $stmt->execute([
-            ':name' => 'Rifle',
-            ':price' => 3
-        ]);
-        $featureId = $database->lastInsertId();
-
-        // Insert Booking_Features relation
-        $stmt = $database->prepare("INSERT INTO Booking_Features (bookingId, featureId, price) VALUES (:bookingId, :featureId, :price)");
-        $stmt->execute([
-            ':bookingId' => $bookingId,
-            ':featureId' => $featureId,
-            ':price' => $rifleCost
-        ]);
-    }
+    echo $json;
 
     echo "Booking completed successfully!";
   
