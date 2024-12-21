@@ -8,10 +8,17 @@ $database = new PDO('sqlite:hotel.db');
 
 if (isset($_POST['transfer_code'])) {
   $transferCode = htmlspecialchars(trim($_POST['transfer_code']));
-  $gunsCost =  isset($_POST['guns']) ? 2 : 0;
-  $rifleCost = isset($_POST['rifle']) ? 3 : 0;
-  $featureCost = $gunsCost + $rifleCost;
-  $user = 'Mahtias';
+  // $gunsCost =  isset($_POST['guns']) ? 2 : 0;
+  // $rifleCost = isset($_POST['rifle']) ? 3 : 0;
+
+  // $featureCost = $gunsCost + $rifleCost;
+  $user = "Mahtias";
+  $island = "Yharnam";
+  $hotel = "Hotel Yharnam";
+  $features = $_POST['features'];
+  $totalCost = 0;
+  
+  
 
   $arrivalDate = $_POST['arrival_date'];
   $departureDate = $_POST['departure_date'];
@@ -48,13 +55,30 @@ if (isset($_POST['transfer_code'])) {
       $roomCost = 0;
   }
 
+  $data = [
+    'island' => $island,
+    'hotel' => $hotel,
+    'arrival_date' => $arrivalDate,
+    'departure_date' => $departureDate,
+    'total_cost' => $totalCost,
+    'features' => []
+  ];
+  
+  
+  if(isset($_POST['features'])){
+    foreach($_POST['features'] as $feature){
+      list($name, $cost) = explode(":", $feature);
+      $data['features'][] = ["name" => $name, "cost" => $cost];
+      $totalCost += $cost;
+    }
+  }
+
+  $data["total_cost"] = $totalCost + $roomCost;
+  $json = json_encode($data, JSON_PRETTY_PRINT);
+  header('Content-Type: application/json');
 
 
-  $totalCost = $featureCost + $roomCost;
-  echo "Room Type Selected: " . $roomType . "<br>";
-  echo "Room Cost: " . $roomCost . "<br>";
-  echo "Feature Cost: " . $featureCost . "<br>";
-  echo "Total Cost: " . $totalCost . "<br>";
+ 
 
 
   if (!isValidUuid($transferCode)) {
@@ -65,10 +89,12 @@ if (isset($_POST['transfer_code'])) {
     $balance = sendTransferRequest($transferCode, $totalCost);
 
     if ($balance >= $totalCost && $totalCost != 0) {
+      
+     
+
+      echo $json;
 
       $deposit = depositTransfer($user, $transferCode);
-
-      echo "Deposit succesful: $deposit";
 
       try {
         // Insert customer
@@ -177,10 +203,20 @@ if (isset($_POST['transfer_code'])) {
     <input type=" text" id="transfer_code" name="transfer_code" required>
       <button type="submit">Book Now</button>
 
+      <label for="features_container">
       <label for="guns">Guns ($2)</label>
-      <input type="checkbox" id="guns" name="guns">
+      <input type="checkbox" id="guns" name="features[]" value="guns:2">
       <label for="rifle">Rifle ($3)</label>
-      <input type="checkbox" id="rifle" name="rifle">
+      <input type="checkbox" id="rifle" name="features[]" value="rifle:3">
+      <label for="yatzy">Yatzy($1)</label>
+      <input type="checkbox" id="yatzy" name="features[]" value="yatzy:1">
+      <label for="waterboiler">Waterboiler ($3)</label>
+      <input type="checkbox" id="waterboiler" name="features[]" value="waterboiler:3">
+      <label for="mixer">Mixer ($2)</label>
+      <input type="checkbox" id="mixer" name="features[]" value="mixer:2">
+      <label for="unicycle">Unicycle ($8)</label>
+      <input type="checkbox" id="unicycle" name="features[]" value="unicycle:8">
+      </label>
 
       <select name="rooms" id="rooms">
         <option value="economy">Economy</option>
@@ -189,10 +225,10 @@ if (isset($_POST['transfer_code'])) {
       </select>
 
       <label for="arrival_date">Arrival Date</label>
-      <input type="date" id="arrival_date" name="arrival_date" min="2025-01-10" max="2025-01-31" required>
+      <input type="date" id="arrival_date" name="arrival_date" min="2025-01-01" max="2025-01-31" required>
 
       <label for="departure_date">Departure Date</label>
-      <input type="date" id="departure_date" name="departure_date" min="2025-01-11" max="2025-01-31" required>
+      <input type="date" id="departure_date" name="departure_date" min="2025-01-01" max="2025-01-31" required>
 
 
   </form>
