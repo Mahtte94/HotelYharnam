@@ -41,8 +41,7 @@ function sendTransferRequest(string $transferCode, int $totalCost): int
 
   $decodedResponse = json_decode($response, true);
 
-    return $decodedResponse['totalCost'] ?? 0;
-  
+  return $decodedResponse['totalCost'] ?? 0;
 }
 
 
@@ -50,9 +49,9 @@ function depositTransfer(string $user, string $transferCode): string
 {
   $url = "https://www.yrgopelago.se/centralbank/deposit";
 
-   $data = [
-          'user' => $user,
-          'transferCode' => $transferCode
+  $data = [
+    'user' => $user,
+    'transferCode' => $transferCode
   ];
 
   $ch = curl_init($url);
@@ -76,4 +75,20 @@ function depositTransfer(string $user, string $transferCode): string
 
   return $response;
 }
-?>
+
+function isRoomAvailable($database, $roomId, $arrivalDate, $departureDate)
+{
+  $stmt = $database->prepare("
+      SELECT *
+      FROM Bookings
+      INNER JOIN Booking_Rooms ON Bookings.id = Booking_Rooms.bookingId
+      WHERE Booking_Rooms.roomId = :roomId
+        AND (Bookings.arrival < :departureDate AND Bookings.departure > :arrivalDate)
+  ");
+  $stmt->execute([
+    ':roomId' => $roomId,
+    ':arrivalDate' => $arrivalDate,
+    ':departureDate' => $departureDate,
+  ]);
+  return $stmt->fetch() === false;
+}

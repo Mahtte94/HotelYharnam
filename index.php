@@ -17,11 +17,12 @@ if (isset($_POST['transfer_code'])) {
   $hotel = "Hotel Yharnam";
   $features = $_POST['features'];
   $totalCost = 0;
-  
-  
+
+
 
   $arrivalDate = $_POST['arrival_date'];
   $departureDate = $_POST['departure_date'];
+
 
 
   if (!$arrivalDate || !$departureDate) {
@@ -63,10 +64,10 @@ if (isset($_POST['transfer_code'])) {
     'total_cost' => $totalCost,
     'features' => []
   ];
-  
-  
-  if(isset($_POST['features'])){
-    foreach($_POST['features'] as $feature){
+
+
+  if (isset($_POST['features'])) {
+    foreach ($_POST['features'] as $feature) {
       list($name, $cost) = explode(":", $feature);
       $data['features'][] = ["name" => $name, "cost" => $cost];
       $totalCost += $cost;
@@ -78,101 +79,101 @@ if (isset($_POST['transfer_code'])) {
   header('Content-Type: application/json');
 
 
- 
+  $stmt = $database->prepare("SELECT id FROM Rooms WHERE name = :name");
+  $stmt->execute([':name' => $roomType]);
+  $roomId = $stmt->fetchColumn();
 
+  if (isRoomAvailable($database, $roomId, $arrivalDate, $departureDate)) {
 
-  if (!isValidUuid($transferCode)) {
+    if (!isValidUuid($transferCode)) {
 
-    echo "Not valid transfercode or not enough balance";
-  } else {
+      echo "Not valid transfercode or not enough balance";
+    } else {
 
-    $balance = sendTransferRequest($transferCode, $totalCost);
+      $balance = sendTransferRequest($transferCode, $totalCost);
 
-    if ($balance >= $totalCost && $totalCost != 0) {
-      
-     
+      if ($balance >= $totalCost && $totalCost != 0) {
 
-      
+        $deposit = depositTransfer($user, $transferCode);
 
-      $deposit = depositTransfer($user, $transferCode);
+        try {
+          // Insert customer
+          $stmt = $database->prepare("INSERT INTO Customers (transferCode) VALUES (:transferCode)");
+          $stmt->execute([':transferCode' => $transferCode]);
+          $customerId = $database->lastInsertId();
 
-      try {
-        // Insert customer
-        $stmt = $database->prepare("INSERT INTO Customers (transferCode) VALUES (:transferCode)");
-        $stmt->execute([':transferCode' => $transferCode]);
-        $customerId = $database->lastInsertId();
-    
-        // Insert booking
-        $stmt = $database->prepare("INSERT INTO Bookings (arrival, departure, customerId) VALUES (:arrivalDate, :departureDate, :customerId)");
-        $stmt->execute([
+          // Insert booking
+          $stmt = $database->prepare("INSERT INTO Bookings (arrival, departure, customerId) VALUES (:arrivalDate, :departureDate, :customerId)");
+          $stmt->execute([
             ':arrivalDate' => $arrivalDate,
             ':departureDate' => $departureDate,
             ':customerId' => $customerId,
-        ]);
-        $bookingId = $database->lastInsertId();
+          ]);
+          $bookingId = $database->lastInsertId();
 
-        // Insert room
-    $stmt = $database->prepare("INSERT INTO Rooms (name, price) VALUES (:name, :price)");
-    $roomPrice = 0;
-    switch ($roomType) {
-        case 'economy':
-            $roomPrice = 1;
-            break;
-        case 'standard':
-            $roomPrice = 2;
-            break;
-        case 'luxury':
-            $roomPrice = 4;
-            break;
-    }
-    $stmt->execute([
-        ':name' => $roomType,
-        ':price' => $roomPrice
-    ]);
-    $roomId = $database->lastInsertId();
-
-    // Insert Booking_Rooms relation
-    $stmt = $database->prepare("INSERT INTO Booking_Rooms (bookingId, roomId, price) VALUES (:bookingId, :roomId, :price)");
-    $stmt->execute([
-        ':bookingId' => $bookingId,
-        ':roomId' => $roomId,
-        ':price' => $roomCost
-    ]);
+          // Insert room
+          $stmt = $database->prepare("INSERT INTO Rooms (name, price) VALUES (:name, :price)");
+          $roomPrice = 0;
+          switch ($roomType) {
+            case 'economy':
+              $roomPrice = 1;
+              break;
+            case 'standard':
+              $roomPrice = 2;
+              break;
+            case 'luxury':
+              $roomPrice = 4;
+              break;
+          }
+          $stmt->execute([
+            ':name' => $roomType,
+            ':price' => $roomPrice
+          ]);
+          $roomId = $database->lastInsertId();
 
 
-    if(isset($features)){
-      foreach($features as $feature){
-      list($name, $cost) = explode(":", $feature);
-      $stmt = $database->prepare("INSERT INTO Features (name, price) VALUES (:name, :price)");
-        $stmt->execute([
-            ':name' => $name,
-            ':price' => $cost
-        ]);
-        $featureId = $database->lastInsertId();
-
-        // Insert Booking_Features relation
-        $stmt = $database->prepare("INSERT INTO Booking_Features (bookingId, featureId, price) VALUES (:bookingId, :featureId, :price)");
-        $stmt->execute([
+          // Insert Booking_Rooms relation
+          $stmt = $database->prepare("INSERT INTO Booking_Rooms (bookingId, roomId, price) VALUES (:bookingId, :roomId, :price)");
+          $stmt->execute([
             ':bookingId' => $bookingId,
-            ':featureId' => $featureId,
-            ':price' => $cost
-        ]);
-      } 
-    }
+            ':roomId' => $roomId,
+            ':price' => $roomCost
+          ]);
 
-    
-    echo $json;
 
-    echo "Booking completed successfully!";
-  
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-    }
-    
-    } else {
+          if (isset($features)) {
+            foreach ($features as $feature) {
+              list($name, $cost) = explode(":", $feature);
+              $stmt = $database->prepare("INSERT INTO Features (name, price) VALUES (:name, :price)");
+              $stmt->execute([
+                ':name' => $name,
+                ':price' => $cost
+              ]);
+              $featureId = $database->lastInsertId();
 
-      echo "Not enough currency. Required: $totalCost";
+              // Insert Booking_Features relation
+              $stmt = $database->prepare("INSERT INTO Booking_Features (bookingId, featureId, price) VALUES (:bookingId, :featureId, :price)");
+              $stmt->execute([
+                ':bookingId' => $bookingId,
+                ':featureId' => $featureId,
+                ':price' => $cost
+              ]);
+            }
+          }
+
+          echo $json;
+
+          echo "Booking completed successfully!";
+        } catch (Exception $e) {
+          echo "Error: " . $e->getMessage();
+        }
+      } else {
+        echo "Not enough currency. Required: $totalCost";
+      }
     }
+  } else {
+    echo "Error: The selected room is already booked for the chosen dates.";
+    exit;
   }
 }
 ?>
@@ -193,18 +194,18 @@ if (isset($_POST['transfer_code'])) {
       <button type="submit">Book Now</button>
 
       <label for="features_container">
-      <label for="guns">Guns ($2)</label>
-      <input type="checkbox" id="guns" name="features[]" value="guns:2">
-      <label for="rifle">Rifle ($3)</label>
-      <input type="checkbox" id="rifle" name="features[]" value="rifle:3">
-      <label for="yatzy">Yatzy($1)</label>
-      <input type="checkbox" id="yatzy" name="features[]" value="yatzy:1">
-      <label for="waterboiler">Waterboiler ($3)</label>
-      <input type="checkbox" id="waterboiler" name="features[]" value="waterboiler:3">
-      <label for="mixer">Mixer ($2)</label>
-      <input type="checkbox" id="mixer" name="features[]" value="mixer:2">
-      <label for="unicycle">Unicycle ($8)</label>
-      <input type="checkbox" id="unicycle" name="features[]" value="unicycle:8">
+        <label for="guns">Guns ($2)</label>
+        <input type="checkbox" id="guns" name="features[]" value="guns:2">
+        <label for="rifle">Rifle ($3)</label>
+        <input type="checkbox" id="rifle" name="features[]" value="rifle:3">
+        <label for="yatzy">Yatzy($1)</label>
+        <input type="checkbox" id="yatzy" name="features[]" value="yatzy:1">
+        <label for="waterboiler">Waterboiler ($3)</label>
+        <input type="checkbox" id="waterboiler" name="features[]" value="waterboiler:3">
+        <label for="mixer">Mixer ($2)</label>
+        <input type="checkbox" id="mixer" name="features[]" value="mixer:2">
+        <label for="unicycle">Unicycle ($8)</label>
+        <input type="checkbox" id="unicycle" name="features[]" value="unicycle:8">
       </label>
 
       <select name="rooms" id="rooms">
