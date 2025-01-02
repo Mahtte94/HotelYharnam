@@ -1,3 +1,4 @@
 .env
 .DS_STORE
 hotel.db
+hotel_booking.json

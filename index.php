@@ -1,24 +1,24 @@
 <?php
 
 require __DIR__ . "/functions.php";
+require __DIR__ . "/booking.php";
 
 $database = new PDO('sqlite:hotel.db');
 
-
+$jsonResponse = null;
+$jsonOutput = '';
+$successMessage = '';
+$user = "Mahtias";
+$island = "Yharnam";
+$hotel = "Hotel Yharnam";
+$stars = 3;
+$greeting = "Thank you for choosing Hotel Yharnam";
+$img = "https://www.well-played.com.au/wp-content/uploads/2021/01/Bloodborne-keyart1.jpg";
+$totalCost = 0;
 
 if (isset($_POST['transfer_code'])) {
   $transferCode = htmlspecialchars(trim($_POST['transfer_code']));
-  // $gunsCost =  isset($_POST['guns']) ? 2 : 0;
-  // $rifleCost = isset($_POST['rifle']) ? 3 : 0;
-
-  // $featureCost = $gunsCost + $rifleCost;
-  $user = "Mahtias";
-  $island = "Yharnam";
-  $hotel = "Hotel Yharnam";
   $features = $_POST['features'];
-  $totalCost = 0;
-
-
 
   $arrivalDate = $_POST['arrival_date'];
   $departureDate = $_POST['departure_date'];
@@ -26,13 +26,9 @@ if (isset($_POST['transfer_code'])) {
 
 
   if (!$arrivalDate || !$departureDate) {
-    echo "Error: Both arrival and departure dates are required.";
-    exit;
-  }
-
-  if ($departureDate <= $arrivalDate) {
-    echo "Error: Departure date must be after arrival date.";
-    exit;
+    $jsonResponse = json_encode(['error' => 'Both arrival and departure dates are required.']);
+  } elseif ($departureDate <= $arrivalDate) {
+    $jsonResponse = json_encode(['error' => 'Departure date must be after arrival date.']);
   }
 
   $start = new DateTime($arrivalDate);
@@ -62,7 +58,12 @@ if (isset($_POST['transfer_code'])) {
     'arrival_date' => $arrivalDate,
     'departure_date' => $departureDate,
     'total_cost' => $totalCost,
-    'features' => []
+    'stars' =>  $stars,
+    'features' => [],
+    'additional_info' => [
+      'greeting' => $greeting,
+      'imageUrl' => $img
+    ]
   ];
 
 
@@ -87,7 +88,7 @@ if (isset($_POST['transfer_code'])) {
 
     if (!isValidUuid($transferCode)) {
 
-      echo "Not valid transfercode or not enough balance";
+      $jsonResponse = json_encode(['error' => 'Not valid transfercode or not enough balance']);
     } else {
 
       $balance = sendTransferRequest($transferCode, $totalCost);
@@ -161,20 +162,43 @@ if (isset($_POST['transfer_code'])) {
             }
           }
 
-          echo $json;
+          $jsonOutput = $json;
+          $successMessage = "Booking completed successfully!";
+          if (!empty($jsonOutput)) {
+            header('Content-Type: application/json');
+            echo $jsonOutput;
 
-          echo "Booking completed successfully!";
+            $filename = "hotel_booking.json";
+            $existingData = [];
+            if (file_exists($filename)) {
+
+              $existingJson = file_get_contents($filename);
+              $existingData = json_decode($existingJson, true);
+              $existingData[] = $data;
+              $updatedJson = json_encode($existingData, JSON_PRETTY_PRINT);
+
+              file_put_contents($filename, $updatedJson);
+            }
+
+            exit;
+          }
         } catch (Exception $e) {
           echo "Error: " . $e->getMessage();
         }
       } else {
-        echo "Not enough currency. Required: $totalCost";
+        $jsonResponse = json_encode(['error' => 'Not enough currency.']);
       }
     }
   } else {
-    echo "Error: The selected room is already booked for the chosen dates.";
+    $jsonResponse = json_encode(['error' => 'The selected room is already booked for the chosen dates.']);
     exit;
   }
+}
+
+if ($jsonResponse !== null) {
+  header('Content-Type: application/json');
+  echo $jsonResponse;
+  exit;
 }
 ?>
 
@@ -184,6 +208,7 @@ if (isset($_POST['transfer_code'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/styles.css">
   <title>Hotel Yharnam</title>
 </head>
 
@@ -222,7 +247,10 @@ if (isset($_POST['transfer_code'])) {
 
 
   </form>
-
+  <?php
+  // Generate and display calendars
+  generateAllCalendars($database);
+  ?>
 </body>
 
 </html>

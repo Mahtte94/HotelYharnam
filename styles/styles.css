@@ -1,4 +1,78 @@
+:root {
+  --primary-color: #3498db;
+  --booked-color: #e74c3c;
+  --available-color: #2ecc71;
+  --background-light: #f8f9fa;
+  --text-color: #333;
+  --currentDate-color: #000;
+}
+
 * {
   box-sizing: border-box;
 }
+
+.today {
+  border: 2px solid var(--currentDate-color);
+}
+
+
+.calendar-container {
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.calendar-title {
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 1.2em;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  background-color: #e0e0e0;
+}
+
+.calendar-header {
+  background-color: var(--background-light);
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+}
+
+.calendar-day {
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.calendar-day:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.day-booked {
+  background-color: var(--booked-color);
+  color: white;
+}
+
+.day-available {
+  background-color: var(--available-color);
+  color: white;
+}
+
+.day-empty {
+  background-color: #f4f4f4;
+}
+
 
