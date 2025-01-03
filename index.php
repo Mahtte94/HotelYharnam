@@ -239,13 +239,14 @@ if ($jsonResponse !== null) {
       </div>
 
       
-        <div class="calendar">
+       
+    </article>
+    <div class="calendar">
           <?php
           // Generate and display calendars
           generateAllCalendars($database);
           ?>
         </div>
-    </article>
     <form method="POST">
       <label for="transfer_code"">transferCode</label>
     <input type=" text" id="transfer_code" name="transfer_code" required>

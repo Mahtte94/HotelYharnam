@@ -69,55 +69,51 @@ main {
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: 100px;
   gap: 10px;
-  height: 82%;
+  max-height: 800px;
   width: 100%;
 }
 
 .room1 {
   height: 33%;
   width: 33%;
-  grid-column: 2/5;
+  grid-column: 2/12;
   grid-row: 1/12;
 }
 
-.room1 img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
+
 
 .room2 {
   height: 33%;
   width: 33%;
-  grid-column: 5/8;
-  grid-row: 1;
+  grid-column: 5/12;
+  grid-row: 1/12;
 }
 
-.room2 img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
 
 .room3 {
   height: 33%;
   width: 33%;
-  grid-column: 8/10;
-  grid-row: 1;
+  grid-column: 8/12;
+  grid-row: 1/12;
 }
 
-.room3 img {
+.room1 img,
+.room2 img,
+.room3 img  {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 
+ 
+
 
 .calendar {
-  grid-row: 5;
-  grid-column: 2/5;
+  display: flex;
+  justify-content: center;
   height: 100%;
-  width: 100%;
+  width: 80vw;
+  gap: 20px;
 }
 
 .today {
