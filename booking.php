@@ -59,14 +59,14 @@ function generateRoomCalendar($roomName, $bookings, $year)
   // Get today's date for comparison
   $today = (new DateTime())->format('Y-m-d');
 
-  echo "<article class='calendar-container'>";
-  echo "<header class='calendar-title'>Room: $roomName - January $year</header>";
-  echo "<section class='calendar-grid'>";
+  echo "<article class='calendarContainer'>";
+  echo "<header class='calendarTitle'>Room: $roomName - January $year</header>";
+  echo "<section class='calendarGrid'>";
 
   // Weekday headers
   $weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
   foreach ($weekdays as $day) {
-    echo "<header class='calendar-header'>$day</header>";
+    echo "<header class='calendarHeader'>$day</header>";
   }
 
   // Start generating the calendar for January
@@ -77,7 +77,7 @@ function generateRoomCalendar($roomName, $bookings, $year)
 
   // Fill empty cells before January 1st
   for ($i = 0; $i < $startDayOfWeek; $i++) {
-    echo "<div class='calendar-day day-empty' aria-hidden='true'></div>";
+    echo "<div class='calendarDay dayEmpty' aria-hidden='true'></div>";
   }
 
   // Fill days of January
@@ -89,9 +89,9 @@ function generateRoomCalendar($roomName, $bookings, $year)
     $isToday = ($currentDate === $today);
 
     if ($isBooked) {
-      echo "<div class='calendar-day day-booked" . ($isToday ? " today" : "") . "' role='gridcell'>$currentDay</div>";
+      echo "<div class='calendarDay dayBooked" . ($isToday ? " today" : "") . "' role='gridcell'>$currentDay</div>";
     } else {
-      echo "<div class='calendar-day day-available" . ($isToday ? " today" : "") . "' role='gridcell'>$currentDay</div>";
+      echo "<div class='calendarDay dayAvailable" . ($isToday ? " today" : "") . "' role='gridcell'>$currentDay</div>";
     }
 
     $currentDay++;
@@ -100,7 +100,7 @@ function generateRoomCalendar($roomName, $bookings, $year)
 
   // Fill empty cells after January 31st
   for ($i = (int) $date->format('w'); $i < 7 && (int) $date->format('w') > 0; $i++) {
-    echo "<div class='calendar-day day-empty' aria-hidden='true'></div>";
+    echo "<div class='calendarDay dayEmpty' aria-hidden='true'></div>";
   }
 
   echo "</section>"; // Close calendar grid

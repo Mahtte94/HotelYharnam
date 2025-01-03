@@ -213,6 +213,19 @@ if ($jsonResponse !== null) {
 </head>
 
 <body>
+  <header class="heroHeader">
+    <section id="hero" class="hero">
+      <h1 class="heroTitle"></h1>
+      <img src="images/HotelYharnam.webp" alt="Hotel Yharnam" class="hotel">
+    </section>
+  </header>
+
+  <header class="navHeader">
+  <nav class="navbar">
+    <h2>Hotel Yharnam</h2>
+  </nav>
+  </header>
+
   <form method="POST">
     <label for="transfer_code"">transferCode</label>
     <input type=" text" id="transfer_code" name="transfer_code" required>
