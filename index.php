@@ -220,50 +220,69 @@ if ($jsonResponse !== null) {
     </section>
   </header>
 
-  <header class="navHeader">
-  <nav class="navbar">
-    <h2>Hotel Yharnam</h2>
-  </nav>
-  </header>
+  <main>
+    <header class="navHeader">
+      <nav class="navbar">
+        <h2>Hotel Yharnam</h2>
+      </nav>
+    </header>
 
-  <form method="POST">
-    <label for="transfer_code"">transferCode</label>
+    <article class="roomsContainer">
+      <div class="room1">
+        <img src="images/budget.jpeg" alt="Budget Room">
+      </div>
+      <div class="room2">
+        <img src="images/standard.jpeg" alt="Standard Room">
+      </div>
+      <div class="room3">
+        <img src="images/luxury.jpeg" alt="Luxury Room">
+      </div>
+
+      
+        <div class="calendar">
+          <?php
+          // Generate and display calendars
+          generateAllCalendars($database);
+          ?>
+        </div>
+    </article>
+    <form method="POST">
+      <label for="transfer_code"">transferCode</label>
     <input type=" text" id="transfer_code" name="transfer_code" required>
-      <button type="submit">Book Now</button>
+        <button type="submit">Book Now</button>
 
-      <label for="features_container">
-        <label for="guns">Guns ($2)</label>
-        <input type="checkbox" id="guns" name="features[]" value="guns:2">
-        <label for="rifle">Rifle ($3)</label>
-        <input type="checkbox" id="rifle" name="features[]" value="rifle:3">
-        <label for="yatzy">Yatzy($1)</label>
-        <input type="checkbox" id="yatzy" name="features[]" value="yatzy:1">
-        <label for="waterboiler">Waterboiler ($3)</label>
-        <input type="checkbox" id="waterboiler" name="features[]" value="waterboiler:3">
-        <label for="mixer">Mixer ($2)</label>
-        <input type="checkbox" id="mixer" name="features[]" value="mixer:2">
-        <label for="unicycle">Unicycle ($8)</label>
-        <input type="checkbox" id="unicycle" name="features[]" value="unicycle:8">
-      </label>
+        <label for="features_container">
+          <label for="guns">Guns ($2)</label>
+          <input type="checkbox" id="guns" name="features[]" value="guns:2">
+          <label for="rifle">Rifle ($3)</label>
+          <input type="checkbox" id="rifle" name="features[]" value="rifle:3">
+          <label for="yatzy">Yatzy($1)</label>
+          <input type="checkbox" id="yatzy" name="features[]" value="yatzy:1">
+          <label for="waterboiler">Waterboiler ($3)</label>
+          <input type="checkbox" id="waterboiler" name="features[]" value="waterboiler:3">
+          <label for="mixer">Mixer ($2)</label>
+          <input type="checkbox" id="mixer" name="features[]" value="mixer:2">
+          <label for="unicycle">Unicycle ($8)</label>
+          <input type="checkbox" id="unicycle" name="features[]" value="unicycle:8">
+        </label>
 
-      <select name="rooms" id="rooms">
-        <option value="economy">Economy</option>
-        <option value="standard">Standard</option>
-        <option value="luxury">Luxury</option>
-      </select>
+        <select name="rooms" id="rooms">
+          <option value="economy">Economy</option>
+          <option value="standard">Standard</option>
+          <option value="luxury">Luxury</option>
+        </select>
 
-      <label for="arrival_date">Arrival Date</label>
-      <input type="date" id="arrival_date" name="arrival_date" min="2025-01-01" max="2025-01-31" required>
+        <label for="arrival_date">Arrival Date</label>
+        <input type="date" id="arrival_date" name="arrival_date" min="2025-01-01" max="2025-01-31" required>
 
-      <label for="departure_date">Departure Date</label>
-      <input type="date" id="departure_date" name="departure_date" min="2025-01-01" max="2025-01-31" required>
+        <label for="departure_date">Departure Date</label>
+        <input type="date" id="departure_date" name="departure_date" min="2025-01-01" max="2025-01-31" required>
 
 
-  </form>
-  <?php
-  // Generate and display calendars
-  generateAllCalendars($database);
-  ?>
+    </form>
+
+
+  </main>
 </body>
 
 </html>
