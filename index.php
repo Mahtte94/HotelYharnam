@@ -213,12 +213,6 @@ if ($jsonResponse !== null) {
 </head>
 
 <body>
-  <header class="heroHeader">
-    <section id="hero" class="hero">
-      <h1 class="heroTitle"></h1>
-      <img src="images/HotelYharnam.webp" alt="Hotel Yharnam" class="hotel">
-    </section>
-  </header>
 
   <main>
     <header class="navHeader">
@@ -228,14 +222,20 @@ if ($jsonResponse !== null) {
     </header>
 
     <article class="roomsContainer">
-      <div class="room1">
+      <div class="room">
         <img src="images/budget.jpeg" alt="Budget Room">
+        <div class="room-content">
+          <h3>Budget Room</h3>
+          <p>The room for the adventurous, in this room we can't garantee that you will survive the night</p>
+        </div>
       </div>
-      <div class="room2">
+      <div class="room">
         <img src="images/standard.jpeg" alt="Standard Room">
+        <div class="room-content"></div>
       </div>
-      <div class="room3">
+      <div class="room">
         <img src="images/luxury.jpeg" alt="Luxury Room">
+        <div class="room-content"></div>
       </div>
 
       
