@@ -231,22 +231,28 @@ if ($jsonResponse !== null) {
       </div>
       <div class="room">
         <img src="images/standard.jpeg" alt="Standard Room">
-        <div class="room-content"></div>
+        <div class="room-content">
+          <h3>Standard Room</h3>
+          <p>The room for the adventurous, in this room we can't garantee that you will survive the night</p>
+        </div>
       </div>
       <div class="room">
         <img src="images/luxury.jpeg" alt="Luxury Room">
-        <div class="room-content"></div>
+        <div class="room-content">
+          <h3>Luxury Room</h3>
+          <p>The room for the adventurous, in this room we can't garantee that you will survive the night</p>
+        </div>
       </div>
 
-      
-       
+
+
     </article>
     <div class="calendar">
-          <?php
-          // Generate and display calendars
-          generateAllCalendars($database);
-          ?>
-        </div>
+      <?php
+      // Generate and display calendars
+      generateAllCalendars($database);
+      ?>
+    </div>
     <form method="POST">
       <label for="transfer_code"">transferCode</label>
     <input type=" text" id="transfer_code" name="transfer_code" required>

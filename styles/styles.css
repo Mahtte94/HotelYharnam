@@ -3,7 +3,7 @@
   --booked-color: #e74c3c;
   --available-color: #2ecc71;
   --background-light: #f8f9fa;
-  --text-color: #151515;
+  --text-color: #fff;
   --currentDate-color: #000;
   --background-color: #230000;
   --mainContent-color: #361515;
@@ -19,7 +19,6 @@
 
 body {
   background-color: var(--background-color);
-  color: var(--text-color);
   z-index: -1;
 }
 
@@ -32,12 +31,12 @@ body {
   height: 120px;
   margin: 0 auto;
   background-color: var(--primary-color);
-  padding-left: 38px;
 }
 
 h2 {
   color: var(--title-color);
   font-size: 4em;
+  margin-left: 75px;
 }
 
 main {
@@ -53,19 +52,21 @@ main {
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   max-width: 1200px;
+  width: 88%;
   margin: 20px 70px;
 }
 
 .room {
   box-shadow: 0 3px 10px rgba(0,0,0,0.5);;
-  background-color: var(--background-light);
+  background-color: var(--primary-color);
   border-radius: 20px;
   overflow: hidden;
 }
 
 .room-content {
+  color: var(--text-color);
   font-size: 0.8rem;
-  padding: 15px;
+  padding: 0px 15px 15px 15px;
 }
 
 .room h3 {
