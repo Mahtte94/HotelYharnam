@@ -16,12 +16,12 @@ $greeting = "Thank you for choosing Hotel Yharnam";
 $img = "https://www.well-played.com.au/wp-content/uploads/2021/01/Bloodborne-keyart1.jpg";
 $totalCost = 0;
 
-if (isset($_POST['transfer_code'])) {
-  $transferCode = htmlspecialchars(trim($_POST['transfer_code']));
+if (isset($_POST['transfer-code'])) {
+  $transferCode = htmlspecialchars(trim($_POST['transfer-code']));
   $features = $_POST['features'];
 
-  $arrivalDate = $_POST['arrival_date'];
-  $departureDate = $_POST['departure_date'];
+  $arrivalDate = $_POST['arrival-date'];
+  $departureDate = $_POST['departure-date'];
 
 
 
@@ -55,12 +55,12 @@ if (isset($_POST['transfer_code'])) {
   $data = [
     'island' => $island,
     'hotel' => $hotel,
-    'arrival_date' => $arrivalDate,
-    'departure_date' => $departureDate,
-    'total_cost' => $totalCost,
+    'arrival-date' => $arrivalDate,
+    'departure-date' => $departureDate,
+    'total-cost' => $totalCost,
     'stars' =>  $stars,
     'features' => [],
-    'additional_info' => [
+    'additional-info' => [
       'greeting' => $greeting,
       'imageUrl' => $img
     ]
@@ -75,7 +75,7 @@ if (isset($_POST['transfer_code'])) {
     }
   }
 
-  $data["total_cost"] = $totalCost + $roomCost;
+  $data["total-cost"] = $totalCost + $roomCost;
   $json = json_encode($data, JSON_PRETTY_PRINT);
   header('Content-Type: application/json');
 
@@ -133,8 +133,8 @@ if (isset($_POST['transfer_code'])) {
           $roomId = $database->lastInsertId();
 
 
-          // Insert Booking_Rooms relation
-          $stmt = $database->prepare("INSERT INTO Booking_Rooms (bookingId, roomId, price) VALUES (:bookingId, :roomId, :price)");
+          // Insert Booking-Rooms relation
+          $stmt = $database->prepare("INSERT INTO Booking-Rooms (bookingId, roomId, price) VALUES (:bookingId, :roomId, :price)");
           $stmt->execute([
             ':bookingId' => $bookingId,
             ':roomId' => $roomId,
@@ -152,8 +152,8 @@ if (isset($_POST['transfer_code'])) {
               ]);
               $featureId = $database->lastInsertId();
 
-              // Insert Booking_Features relation
-              $stmt = $database->prepare("INSERT INTO Booking_Features (bookingId, featureId, price) VALUES (:bookingId, :featureId, :price)");
+              // Insert Booking-Features relation
+              $stmt = $database->prepare("INSERT INTO Booking-Features (bookingId, featureId, price) VALUES (:bookingId, :featureId, :price)");
               $stmt->execute([
                 ':bookingId' => $bookingId,
                 ':featureId' => $featureId,
@@ -168,7 +168,7 @@ if (isset($_POST['transfer_code'])) {
             header('Content-Type: application/json');
             echo $jsonOutput;
 
-            $filename = "hotel_booking.json";
+            $filename = "hotel-booking.json";
             $existingData = [];
             if (file_exists($filename)) {
 
@@ -209,6 +209,7 @@ if ($jsonResponse !== null) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles/styles.css">
+
   <title>Hotel Yharnam</title>
 </head>
 
@@ -225,7 +226,7 @@ if ($jsonResponse !== null) {
       <div class="room">
         <img src="images/budget.jpeg" alt="Budget Room">
         <div class="room-content">
-          <h3>Budget Room</h3>
+          <h3>Economy Room</h3>
           <p>The room for the adventurous, in this room we can't garantee that you will survive the night</p>
         </div>
       </div>
@@ -254,42 +255,55 @@ if ($jsonResponse !== null) {
       ?>
     </div>
     <form method="POST">
-      <label for="transfer_code"">transferCode</label>
-    <input type=" text" id="transfer_code" name="transfer_code" required>
-        <button type="submit">Book Now</button>
+      <label for="arrival-date" class="arrival-date">Arrival Date</label>
+      <input type="date" id="arrival-date" name="arrival-date" min="2025-01-01" max="2025-01-31" required>
 
-        <label for="features_container">
+      <label for="departure-date" class="departure-date">Departure Date</label>
+      <input type="date" id="departure-date" name="departure-date" min="2025-01-01" max="2025-01-31" required>
+
+      <label for="rooms" class="rooms">Room Type</label>
+      <select name="rooms" id="rooms">
+        <option value="economy">Economy</option>
+        <option value="standard">Standard</option>
+        <option value="luxury">Luxury</option>
+      </select>
+
+      <div class="border-features">
+        <h3>Features</h3>
+        <label for="features-container" class="features-container">
+          <input type="checkbox" class="feature-checkbox" data-cost="2" id="guns" name="features[]" value="guns:2">
           <label for="guns">Guns ($2)</label>
-          <input type="checkbox" id="guns" name="features[]" value="guns:2">
+
+          <input type="checkbox" class="feature-checkbox" data-cost="3" id="rifle" name="features[]" value="rifle:3">
           <label for="rifle">Rifle ($3)</label>
-          <input type="checkbox" id="rifle" name="features[]" value="rifle:3">
+
+          <input type="checkbox" class="feature-checkbox" data-cost="1" id="yatzy" name="features[]" value="yatzy:1">
           <label for="yatzy">Yatzy($1)</label>
-          <input type="checkbox" id="yatzy" name="features[]" value="yatzy:1">
+
+          <input type="checkbox" class="feature-checkbox" data-cost="3" id="waterboiler" name="features[]" value="waterboiler:3">
           <label for="waterboiler">Waterboiler ($3)</label>
-          <input type="checkbox" id="waterboiler" name="features[]" value="waterboiler:3">
+
+          <input type="checkbox" class="feature-checkbox" data-cost="2" id="mixer" name="features[]" value="mixer:2">
           <label for="mixer">Mixer ($2)</label>
-          <input type="checkbox" id="mixer" name="features[]" value="mixer:2">
+
+          <input type="checkbox" class="feature-checkbox" data-cost="8" id="unicycle" name="features[]" value="unicycle:8">
           <label for="unicycle">Unicycle ($8)</label>
-          <input type="checkbox" id="unicycle" name="features[]" value="unicycle:8">
+
         </label>
+      </div>
 
-        <select name="rooms" id="rooms">
-          <option value="economy">Economy</option>
-          <option value="standard">Standard</option>
-          <option value="luxury">Luxury</option>
-        </select>
+      <h4>Transfer code</h4>
+      <input type=" text" id="transfer-code" name="transfer-code" required>
 
-        <label for="arrival_date">Arrival Date</label>
-        <input type="date" id="arrival_date" name="arrival_date" min="2025-01-01" max="2025-01-31" required>
-
-        <label for="departure_date">Departure Date</label>
-        <input type="date" id="departure_date" name="departure_date" min="2025-01-01" max="2025-01-31" required>
-
+      <div class="display-cost">
+        <span id="total-cost"></span>
+      </div>
+      <button type="submit">Book Now</button>
 
     </form>
-
-
   </main>
+
+  <script src="scripts.js"></script>
 </body>
 
 </html>
