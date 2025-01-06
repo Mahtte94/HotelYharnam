@@ -67,7 +67,7 @@ h1 {
 .fog {
   position: relative;
   z-index: 2;
-  width: 930px;
+  width: 1150px;
   
 }
 
@@ -118,7 +118,7 @@ main {
 
 .room-content {
   color: var(--text-color);
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   padding: 0px 15px 15px 15px;
 }
 

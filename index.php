@@ -225,10 +225,10 @@ if ($jsonResponse !== null) {
   <section class="hero">
     <img src="images/HotelYharnam.webp" alt="Hotel Yharnam">
     <div class="fog">
-    
-    <h2>Welcome to the "safest" place in Yharnam!</h2>
+
+      <h2>Welcome traveller to the "safest" place in Yharnam!</h2>
     </div>
-    
+
   </section>
 
 
@@ -237,21 +237,21 @@ if ($jsonResponse !== null) {
       <img src="images/budget.jpeg" alt="Budget Room">
       <div class="room-content">
         <h3>Economy Room</h3>
-        <p>The room for the adventurous, in this room we can't guarantee that you will survive the night</p>
+        <p>Bare essentials and creeping dread. Survival is not guaranteed, but the key is yours.</p>
       </div>
     </div>
     <div class="room">
       <img src="images/standard.jpeg" alt="Standard Room">
       <div class="room-content">
         <h3>Standard Room</h3>
-        <p>The room for the adventurous, in this room we can't garantee that you will survive the night</p>
+        <p>Modest comfort with a touch of unease. The walls may whisper, but rest is possible—if you’re brave enough.</p>
       </div>
     </div>
     <div class="room">
       <img src="images/luxury.jpeg" alt="Luxury Room">
       <div class="room-content">
         <h3>Luxury Room</h3>
-        <p>The room for the adventurous, in this room we can't garantee that you will survive the night</p>
+        <p>Bare essentials and creeping dread. Survival is not guaranteed, but the key is yours.</p>
       </div>
     </div>
 
