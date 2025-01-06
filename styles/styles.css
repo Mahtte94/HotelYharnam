@@ -22,22 +22,53 @@ body {
   z-index: -1;
 }
 
+
+
 .navHeader {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 80vw;
-  max-width: 1200px;
-  height: 120px;
+  width: 100%;
+  height: 100px;
   margin: 0 auto;
   background-color: var(--primary-color);
 }
 
-h2 {
+h1 {
   color: var(--title-color);
-  font-size: 4em;
-  margin-left: 75px;
+  font-size: 3em;
+  margin-left: 180px;
 }
+
+.hero {
+  position: relative; 
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 100%;
+  height: 85vh;
+}
+
+.hero img {
+  width: 100%;
+  height: 85vh;
+  object-fit: cover;
+  position: absolute; 
+  top: 0;
+  left: 0;
+  z-index: 1; 
+  filter: brightness(50%);
+}
+
+.hero h2 {
+  position: relative;
+  color: var(--text-color);
+  z-index: 2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+  font-size: 2rem; 
+  text-align: center;
+}
+
 
 main {
   background-color: var(--mainContent-color);
@@ -48,12 +79,12 @@ main {
 }
 
 .roomsContainer {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: center;
   gap: 2rem;
-  max-width: 1200px;
-  width: 88%;
-  margin: 20px 70px;
+  max-width: 1500px;
+  width: 90%;
+  margin: 50px auto;
 }
 
 .room {
@@ -61,6 +92,7 @@ main {
   background-color: var(--primary-color);
   border-radius: 10px;
   overflow: hidden;
+  
 }
 
 .room-content {
@@ -75,7 +107,6 @@ main {
 }
 
 .room img {
-  height: 200px;
   width: 100%;
   object-fit: cover;
 }
@@ -85,6 +116,8 @@ main {
   justify-content: center;
   gap: 2rem;
   margin: 0 auto;
+  max-width: 1500px;
+  width: 90%;
 }
 
 .today {
@@ -92,8 +125,7 @@ main {
 }
 
 .calendarContainer {
-  max-width: 1200px;
-  width: 27.5%;
+  width: 90%;
   font-family: "Arial", sans-serif;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -154,7 +186,8 @@ main {
 
 form {
   color: var(--text-color);
-  max-width: 1050px;
+  max-width: 1500px;
+  width: 90%;
   margin: 3rem auto;
   padding: 2rem;
   background-color: var(--primary-color);
@@ -162,11 +195,16 @@ form {
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.5);
 }
 
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
 #arrival-date,
 #departure-date,
 #transfer-code,
 select {
-  width: 100%;
+  width: 50%;
   padding: 0.8rem;
   margin-bottom: 2rem;
   border: 1px solid var(--text-color);
@@ -178,7 +216,8 @@ select {
 .departure-date,
 .rooms,
 h3,
-h4 {
+h4,
+.display-cost {
   font-size: 1.5rem;
   font-weight: 400;
   margin-bottom: 0.5rem;
@@ -196,9 +235,26 @@ h3 {
 }
 
 .border-features {
-  max-width: 700px;
+  width: 50%;
   border: 2px solid white;
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 2rem;
+}
+
+button {
+  color: var(--text-color);
+  width: 135px;
+  height: 40px;
+  font-size: 1.2rem;
+  background-color: var(--mainContent-color);
+  border-radius: 10px;
+  border: 1px solid var(--background-light);
+  transition: transform 0.3s ease-in-out;
+}
+
+button:hover {
+  cursor:pointer;
+  background-color: var(--primary-color);
+  transform: scale(1.05);
 }

@@ -215,46 +215,54 @@ if ($jsonResponse !== null) {
 
 <body>
 
-  <main>
-    <header class="navHeader">
-      <nav class="navbar">
-        <h2>Hotel Yharnam</h2>
-      </nav>
-    </header>
 
-    <article class="roomsContainer">
-      <div class="room">
-        <img src="images/budget.jpeg" alt="Budget Room">
-        <div class="room-content">
-          <h3>Economy Room</h3>
-          <p>The room for the adventurous, in this room we can't garantee that you will survive the night</p>
-        </div>
+  <header class="navHeader">
+    <nav class="navbar">
+      <h1>Hotel Yharnam</h1>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <img src="images/HotelYharnam.webp" alt="Hotel Yharnam">
+    <h2>Welcome to the "safest" place in Yharnam!</h2>
+  </section>
+
+
+  <article class="roomsContainer">
+    <div class="room">
+      <img src="images/budget.jpeg" alt="Budget Room">
+      <div class="room-content">
+        <h3>Economy Room</h3>
+        <p>The room for the adventurous, in this room we can't guarantee that you will survive the night</p>
       </div>
-      <div class="room">
-        <img src="images/standard.jpeg" alt="Standard Room">
-        <div class="room-content">
-          <h3>Standard Room</h3>
-          <p>The room for the adventurous, in this room we can't garantee that you will survive the night</p>
-        </div>
-      </div>
-      <div class="room">
-        <img src="images/luxury.jpeg" alt="Luxury Room">
-        <div class="room-content">
-          <h3>Luxury Room</h3>
-          <p>The room for the adventurous, in this room we can't garantee that you will survive the night</p>
-        </div>
-      </div>
-
-
-
-    </article>
-    <div class="calendar">
-      <?php
-      // Generate and display calendars
-      generateAllCalendars($database);
-      ?>
     </div>
-    <form method="POST">
+    <div class="room">
+      <img src="images/standard.jpeg" alt="Standard Room">
+      <div class="room-content">
+        <h3>Standard Room</h3>
+        <p>The room for the adventurous, in this room we can't garantee that you will survive the night</p>
+      </div>
+    </div>
+    <div class="room">
+      <img src="images/luxury.jpeg" alt="Luxury Room">
+      <div class="room-content">
+        <h3>Luxury Room</h3>
+        <p>The room for the adventurous, in this room we can't garantee that you will survive the night</p>
+      </div>
+    </div>
+
+
+
+  </article>
+  <div class="calendar">
+    <?php
+    // Generate and display calendars
+    generateAllCalendars($database);
+    ?>
+  </div>
+  <form method="POST">
+
+    <div class="form-container">
       <label for="arrival-date" class="arrival-date">Arrival Date</label>
       <input type="date" id="arrival-date" name="arrival-date" min="2025-01-01" max="2025-01-31" required>
 
@@ -263,9 +271,9 @@ if ($jsonResponse !== null) {
 
       <label for="rooms" class="rooms">Room Type</label>
       <select name="rooms" id="rooms">
-        <option value="economy">Economy</option>
-        <option value="standard">Standard</option>
-        <option value="luxury">Luxury</option>
+        <option value="economy">Economy $1/Day</option>
+        <option value="standard">Standard $2/Day</option>
+        <option value="luxury">Luxury $4/Day</option>
       </select>
 
       <div class="border-features">
@@ -299,9 +307,10 @@ if ($jsonResponse !== null) {
         <span id="total-cost"></span>
       </div>
       <button type="submit">Book Now</button>
+    </div>
 
-    </form>
-  </main>
+  </form>
+
 
   <script src="scripts.js"></script>
 </body>
