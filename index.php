@@ -224,7 +224,11 @@ if ($jsonResponse !== null) {
 
   <section class="hero">
     <img src="images/HotelYharnam.webp" alt="Hotel Yharnam">
+    <div class="fog">
+    
     <h2>Welcome to the "safest" place in Yharnam!</h2>
+    </div>
+    
   </section>
 
 
@@ -291,16 +295,13 @@ if ($jsonResponse !== null) {
           <input type="checkbox" class="feature-checkbox" data-cost="3" id="waterboiler" name="features[]" value="waterboiler:3">
           <label for="waterboiler">Waterboiler ($3)</label>
 
-          <input type="checkbox" class="feature-checkbox" data-cost="2" id="mixer" name="features[]" value="mixer:2">
-          <label for="mixer">Mixer ($2)</label>
-
           <input type="checkbox" class="feature-checkbox" data-cost="8" id="unicycle" name="features[]" value="unicycle:8">
           <label for="unicycle">Unicycle ($8)</label>
 
         </label>
       </div>
 
-      <h4>Transfer code</h4>
+      <h4>Transfer Code</h4>
       <input type=" text" id="transfer-code" name="transfer-code" required>
 
       <div class="display-cost">
