@@ -75,8 +75,3 @@ function depositTransfer(string $user, string $transferCode): string
 
   return $response;
 }
-
-
-
-
-?>

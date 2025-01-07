@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 function isRoomAvailable($database, $roomId, $arrivalDate, $departureDate)
 {
   $stmt = $database->prepare("
@@ -43,10 +45,12 @@ function getRoomBookingsForJanuary($database, $roomName, $year)
 }
 
 
-function generateRoomCalendar($roomName, $bookings, $year)
+function generateRoomCalendar($bookings, $year)
 {
-  // Create an array to track booked dates
+  $monthName = 'January';
+  $weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   $bookedDates = [];
+
   foreach ($bookings as $booking) {
     $start = new DateTime($booking['arrival']);
     $end = new DateTime($booking['departure']);
@@ -56,56 +60,34 @@ function generateRoomCalendar($roomName, $bookings, $year)
     }
   }
 
-  // Get today's date for comparison
   $today = (new DateTime())->format('Y-m-d');
-
-  echo "<article class='calendarContainer'>";
-  echo "<header class='calendarTitle'>Room: $roomName - January $year</header>";
-  echo "<section class='calendarGrid'>";
-
-  // Weekday headers
-  $weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
-  foreach ($weekdays as $day) {
-    echo "<header class='calendarHeader'>$day</header>";
-  }
-
-  // Start generating the calendar for January
   $date = new DateTime("$year-01-01");
-  $startDayOfWeek = (int) $date->format('w');
-  $currentDay = 1;
+  $startDayOfWeek = $date->format('w');
   $totalDays = 31;
+  $calendar = [];
 
-  // Fill empty cells before January 1st
+  // Add header
+  $calendar['header'] = ['month' => $monthName, 'weekdays' => $weekdays];
+
+  // Add empty cells before the 1st
   for ($i = 0; $i < $startDayOfWeek; $i++) {
-    echo "<div class='calendarDay dayEmpty' aria-hidden='true'></div>";
+    $calendar['days'][] = ['day' => '', 'isBooked' => false, 'isToday' => false];
   }
 
-  // Fill days of January
-  while ($currentDay <= $totalDays) {
+  // Add days of the month
+  for ($day = 1; $day <= $totalDays; $day++) {
     $currentDate = $date->format('Y-m-d');
-    $isBooked = in_array($currentDate, $bookedDates);
-
-    // Determine if today is the current date
-    $isToday = ($currentDate === $today);
-
-    if ($isBooked) {
-      echo "<div class='calendarDay dayBooked" . ($isToday ? " today" : "") . "' role='gridcell'>$currentDay</div>";
-    } else {
-      echo "<div class='calendarDay dayAvailable" . ($isToday ? " today" : "") . "' role='gridcell'>$currentDay</div>";
-    }
-
-    $currentDay++;
+    $calendar['days'][] = [
+      'day' => $day,
+      'isBooked' => in_array($currentDate, $bookedDates),
+      'isToday' => $currentDate === $today
+    ];
     $date->modify('+1 day');
   }
 
-  // Fill empty cells after January 31st
-  for ($i = (int) $date->format('w'); $i < 7 && (int) $date->format('w') > 0; $i++) {
-    echo "<div class='calendarDay dayEmpty' aria-hidden='true'></div>";
-  }
-
-  echo "</section>"; // Close calendar grid
-  echo "</article>"; // Close calendar container
+  return $calendar;
 }
+
 
 // Fetch all unique rooms from the database for January bookings
 function getUniqueRoomsForBookings($database, $year)
@@ -134,9 +116,13 @@ const ROOM_TYPES = ['economy', 'standard', 'luxury'];
 function generateAllCalendars($database)
 {
   $year = 2025;
+  $allCalendars = [];
 
   foreach (ROOM_TYPES as $roomName) {
     $bookings = getRoomBookingsForJanuary($database, $roomName, $year);
-    generateRoomCalendar($roomName, $bookings, $year);
+    $calendarData = generateRoomCalendar($bookings, $year);
+    $allCalendars[$roomName] = $calendarData;
   }
+
+  return $allCalendars;
 }

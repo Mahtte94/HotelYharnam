@@ -251,19 +251,55 @@ if ($jsonResponse !== null) {
       <img src="images/luxury.jpeg" alt="Luxury Room">
       <div class="room-content">
         <h3>Luxury Room</h3>
-        <p>Bare essentials and creeping dread. Survival is not guaranteed, but the key is yours.</p>
+        <p>Lavish and perilous. Shadows covet your comfort as much as your sanity.</p>
       </div>
     </div>
 
 
 
   </article>
-  <div class="calendar">
-    <?php
-    // Generate and display calendars
-    generateAllCalendars($database);
-    ?>
+
+  <?php
+  // Generate and display calendars
+  $calendars = generateAllCalendars($database);
+  ?>
+
+  <div class="calendar-container">
+    <?php foreach ($calendars as $roomType => $calendar): ?>
+      <div class="calendar">
+        <h2><?php echo ucfirst($roomType); ?> Room Calendar</h2>
+        <table>
+          <thead>
+            <tr>
+              <?php foreach ($calendar['header']['weekdays'] as $weekday): ?>
+                <th><?php echo $weekday; ?></th>
+              <?php endforeach; ?>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <?php
+              $counter = 0;
+              foreach ($calendar['days'] as $day):
+                if ($counter % 7 == 0 && $counter != 0): ?>
+            </tr>
+            <tr>
+            <?php endif; ?>
+            <td class="<?php
+                        echo $day['isToday'] ? 'today' : '';
+                        echo $day['isBooked'] ? ' booked' : '';
+                        ?>">
+              <?php echo $day['day']; ?>
+            </td>
+            <?php $counter++; ?>
+          <?php endforeach; ?>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    <?php endforeach; ?>
   </div>
+
   <form method="POST">
 
     <div class="form-container">
@@ -310,7 +346,11 @@ if ($jsonResponse !== null) {
       <button type="submit">Book Now</button>
     </div>
 
+
+
+
   </form>
+
 
 
   <script src="scripts.js"></script>
