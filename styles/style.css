@@ -1,19 +1,18 @@
-
 /* HERO */
 .navHeader {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
   width: 100%;
   height: 100px;
   margin: 0 auto;
   background-color: var(--primary-color);
+  padding-top: 15px;
 }
 
 h1 {
+  margin: 0 auto;
+  width: 90%;
   color: var(--title-color);
   font-size: 4em;
-  margin-left: 180px;
+  
 }
 
 .hero {
@@ -226,11 +225,18 @@ button:hover {
 
 /* FOOTER */
 
-footer{
-  margin: 0 auto;
+footer {
+  width: 100%;
+  background-color: var(--primary-color);
   color: var(--text-color);
+  height: 50px;
+  padding-top: 20px;
 }
 
 footer p {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  width: 90%;
+  font-size: 1rem;
+  max-width: 1500px;
   margin: 0 auto;
 }
