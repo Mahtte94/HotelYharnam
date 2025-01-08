@@ -10,7 +10,6 @@ function isValidUuid(string $uuid): bool
   return true;
 }
 
-
 function sendTransferRequest(string $transferCode, int $totalCost): int
 {
   $url = "https://www.yrgopelago.se/centralbank/transferCode";

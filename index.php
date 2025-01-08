@@ -9,13 +9,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   exit;
 }
 
-require __DIR__ . "/header.php";
+require_once __DIR__ . "/header.php";
 ?>
 
 
 
 <main>
-  <header class="navHeader">
+  <header class="nav-header">
     <nav class="navbar">
       <h1>Hotel Yharnam</h1>
     </nav>
@@ -24,14 +24,12 @@ require __DIR__ . "/header.php";
   <section class="hero">
     <img src="images/HotelYharnam.webp" alt="Hotel Yharnam">
     <div class="fog">
-
       <h2>Welcome traveller to the "safest" place in Yharnam!</h2>
     </div>
-
   </section>
 
 
-  <article class="roomsContainer">
+  <article class="rooms-container">
     <div class="room">
       <img src="images/budget.jpeg" alt="Budget Room">
       <div class="room-content">
@@ -53,9 +51,6 @@ require __DIR__ . "/header.php";
         <p>Lavish and perilous. Shadows covet your comfort as much as your sanity.</p>
       </div>
     </div>
-
-
-
   </article>
 
   <?php
@@ -137,7 +132,7 @@ require __DIR__ . "/header.php";
       </div>
 
       <h4>Transfer Code</h4>
-      <input type=" text" id="transfer-code" name="transfer-code" required>
+      <input type="text" id="transfer-code" name="transfer-code" required>
 
       <div class="display-cost">
         <span id="total-cost"></span>
@@ -157,5 +152,5 @@ require __DIR__ . "/header.php";
 </main>
 
 <?php
-require __DIR__ . "/footer.php";
+require_once __DIR__ . "/footer.php";
 ?>
