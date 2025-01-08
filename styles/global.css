@@ -12,7 +12,7 @@
 
 @font-face {
   font-family: "Gothic";
-  src: url("/fonts/Alice_in_Wonderland_3.ttf");
+  src: url("../fonts/Alice.ttf");
 }
 
 * {
