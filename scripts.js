@@ -77,4 +77,4 @@ function showNextEnvironment() {
 environments[currentEnvironmentIndex].classList.add("active");
 
 // Change room every 5 seconds
-setInterval(showNextEnvironment, 3000);
+setInterval(showNextEnvironment, 5000);
