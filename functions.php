@@ -74,3 +74,29 @@ function depositTransfer(string $user, string $transferCode): string
 
   return $response;
 }
+
+function calculateRoomCost(string $roomType, float $totalDays): float {
+  if ($totalDays > 3) {
+      switch ($roomType) {
+          case 'economy':
+              return round((1 / 0.30) * $totalDays);
+          case 'standard':
+              return round((2 / 0.30) * $totalDays);
+          case 'luxury':
+              return round((4 / 0.30) * $totalDays);
+          default:
+              return 0;
+      }
+  } else {
+      switch ($roomType) {
+          case 'economy':
+              return 1 * $totalDays;
+          case 'standard':
+              return 2 * $totalDays;
+          case 'luxury':
+              return 4 * $totalDays;
+          default:
+              return 0;
+      }
+  }
+}

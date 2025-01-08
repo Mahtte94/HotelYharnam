@@ -40,21 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $totalDays = $start->diff($end)->days + 1;
 
   $roomType = $_POST['rooms'];
-  $roomCost = 0;
+  $roomCost = calculateRoomCost($roomType, $totalDays);
 
-  switch ($roomType) {
-    case 'economy':
-      $roomCost = 1 * $totalDays;
-      break;
-    case 'standard':
-      $roomCost = 2 * $totalDays;
-      break;
-    case 'luxury':
-      $roomCost = 4 * $totalDays;
-      break;
-    default:
-      $roomCost = 0;
-  }
 
   $data = [
     'island' => $island,
@@ -117,18 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           // Insert room
           $stmt = $database->prepare("INSERT INTO Rooms (name, price) VALUES (:name, :price)");
-          $roomPrice = 0;
-          switch ($roomType) {
-            case 'economy':
-              $roomPrice = 1;
-              break;
-            case 'standard':
-              $roomPrice = 2;
-              break;
-            case 'luxury':
-              $roomPrice = 4;
-              break;
-          }
+          $roomPrice = calculateRoomCost($roomType, $totalDays);
           $stmt->execute([
             ':name' => $roomType,
             ':price' => $roomPrice

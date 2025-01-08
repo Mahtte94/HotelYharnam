@@ -23,6 +23,22 @@ function calculateTotalCost() {
 
     // Calculate the room cost based on the room type and total days
     let roomCost;
+    if (totalDays > 3) {
+      switch (roomType) {
+        case "economy":
+          roomCost = Math.round((1/0.3) * totalDays);
+          break;
+        case "standard":
+          roomCost = Math.round((2/0.3) * totalDays);
+          break;
+        case "luxury":
+          roomCost = Math.round((4/0.3) * totalDays);
+          break;
+        default:
+          roomCost = 0;
+      }
+    }else{
+    
     switch (roomType) {
       case "economy":
         roomCost = 1 * totalDays;
@@ -36,6 +52,7 @@ function calculateTotalCost() {
       default:
         roomCost = 0;
     }
+  }
 
     // Calculate the feature cost
     let featureCost = 0;
