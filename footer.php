@@ -1,5 +1,5 @@
 <footer>
-  <p>&copy; Hotel Yharnam</p>
+  <p>&copy; <?=date('Y')?> Hotel Yharnam</p>
 </footer>
 
 <script src="scripts.js"></script>
