@@ -2,21 +2,26 @@
 
 declare(strict_types=1);
 
-function isRoomAvailable($database, $roomId, $arrivalDate, $departureDate)
+function isRoomAvailable($database, $roomType, $arrivalDate, $departureDate)
 {
   $stmt = $database->prepare("
-      SELECT *
-      FROM Bookings
-      INNER JOIN Booking_Rooms ON Bookings.id = Booking_Rooms.bookingId
-      WHERE Booking_Rooms.roomId = :roomId
-        AND (Bookings.arrival < :departureDate AND Bookings.departure > :arrivalDate)
-  ");
+  SELECT COUNT(*) as count
+  FROM Bookings b
+  INNER JOIN Booking_Rooms br ON b.id = br.bookingId
+  INNER JOIN Rooms r ON br.roomId = r.id
+  WHERE r.name = :roomType
+  AND (
+      (b.arrival <= :departureDate AND b.departure >= :arrivalDate)
+  )
+");
+
   $stmt->execute([
-    ':roomId' => $roomId,
+    ':roomType' => $roomType,
     ':arrivalDate' => $arrivalDate,
-    ':departureDate' => $departureDate,
+    ':departureDate' => $departureDate
   ]);
-  return $stmt->fetch() === false;
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  return $result['count'] == 0;
 }
 
 // Fetch all bookings for a specific room in January

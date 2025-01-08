@@ -1,0 +1,28 @@
+:root {
+  --primary-color: #4b2626;
+  --booked-color: #e74c3c;
+  --available-color: #2ecc71;
+  --background-light: #f8f9fa;
+  --text-color: #fff;
+  --currentDate-color: #000;
+  --background-color: #230000;
+  --mainContent-color: #361515;
+  --title-color: #fff;
+}
+
+@font-face {
+  font-family: "Gothic";
+  src: url("/fonts/Alice_in_Wonderland_3.ttf");
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Gothic";
+  background-color: var(--background-color);
+}

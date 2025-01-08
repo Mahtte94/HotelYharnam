@@ -1,32 +1,5 @@
-:root {
-  --primary-color: #4b2626;
-  --booked-color: #e74c3c;
-  --available-color: #2ecc71;
-  --background-light: #f8f9fa;
-  --text-color: #fff;
-  --currentDate-color: #000;
-  --background-color: #230000;
-  --mainContent-color: #361515;
-  --title-color: #fff;
-}
 
-@font-face {
-  font-family: "Gothic";
-  src: url("/fonts/Alice_in_Wonderland_3.ttf");
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: "Gothic";
-  background-color: var(--background-color);
-}
-
+/* HERO */
 .navHeader {
   display: flex;
   justify-content: flex-start;
@@ -91,6 +64,8 @@ h1 {
   text-align: center;
 }
 
+/* ROOMS */
+
 .roomsContainer {
   display: flex;
   justify-content: center;
@@ -122,6 +97,8 @@ h1 {
   width: 100%;
   object-fit: cover;
 }
+
+/* CALENDAR */
 
 .calendar-container {
   display: flex;
@@ -168,6 +145,8 @@ th {
   font-size: 2rem;
   margin-bottom: 15px;
 }
+
+/* FORM SECTION */
 
 form {
   color: var(--text-color);
@@ -243,4 +222,15 @@ button:hover {
   cursor: pointer;
   background-color: var(--primary-color);
   transform: scale(1.05);
+}
+
+/* FOOTER */
+
+footer{
+  margin: 0 auto;
+  color: var(--text-color);
+}
+
+footer p {
+  margin: 0 auto;
 }
