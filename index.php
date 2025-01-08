@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   exit;
 }
 
+
 require_once __DIR__ . "/header.php";
 ?>
 
@@ -137,6 +138,7 @@ require_once __DIR__ . "/header.php";
       <div class="display-cost">
         <span id="total-cost"></span>
       </div>
+      <span id="discount-message" class="discount" style="display: none">You have activated the 30% discount</span>
       <button type="submit">Book Now</button>
     </div>
 

@@ -26,13 +26,13 @@ function calculateTotalCost() {
     if (totalDays > 3) {
       switch (roomType) {
         case "economy":
-          roomCost = Math.round((1/0.3) * totalDays);
+          roomCost = Math.round((1 * totalDays * 0.7));
           break;
         case "standard":
-          roomCost = Math.round((2/0.3) * totalDays);
+          roomCost = Math.round((2 * totalDays * 0.7));
           break;
         case "luxury":
-          roomCost = Math.round((4/0.3) * totalDays);
+          roomCost = Math.round((4 * totalDays * 0.7));
           break;
         default:
           roomCost = 0;
@@ -95,3 +95,27 @@ environments[currentEnvironmentIndex].classList.add("active");
 
 // Change room every 5 seconds
 setInterval(showNextEnvironment, 5000);
+
+document.addEventListener('DOMContentLoaded', function() {
+  const arrivalDate = document.getElementById('arrival-date');
+  const departureDate = document.getElementById('departure-date');
+  const discountMessage = document.getElementById('discount-message');
+
+  function calculateTotalDays() {
+      if (arrivalDate.value && departureDate.value) {
+          const start = new Date(arrivalDate.value);
+          const end = new Date(departureDate.value);
+          const diffTime = Math.abs(end - start);
+          const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+          
+          if (totalDays > 3) {
+              discountMessage.style.display = 'block';
+          } else {
+              discountMessage.style.display = 'none';
+          }
+      }
+  }
+
+  arrivalDate.addEventListener('change', calculateTotalDays);
+  departureDate.addEventListener('change', calculateTotalDays);
+});

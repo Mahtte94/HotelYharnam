@@ -26,18 +26,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $arrivalDate = $_POST['arrival-date'];
   $departureDate = $_POST['departure-date'];
-
-
-
-  if (!$arrivalDate || !$departureDate) {
-    $jsonResponse = json_encode(['error' => 'Both arrival and departure dates are required.']);
-  } elseif ($departureDate <= $arrivalDate) {
-    $jsonResponse = json_encode(['error' => 'Departure date must be after arrival date.']);
-  }
-
   $start = new DateTime($arrivalDate);
   $end = new DateTime($departureDate);
   $totalDays = $start->diff($end)->days + 1;
+
+ if (!$arrivalDate || !$departureDate) {
+    $jsonResponse = json_encode(['error' => 'Both arrival and departure dates are required.']);
+    header('Content-Type: application/json');
+    echo $jsonResponse;
+    exit;
+  }
+  if ($end <= $start) {
+    $jsonResponse = json_encode(['error' => 'Departure date must be after arrival date.']);
+    header('Content-Type: application/json');
+    echo $jsonResponse;
+    exit;
+    }
+  
 
   $roomType = $_POST['rooms'];
   $roomCost = calculateRoomCost($roomType, $totalDays);

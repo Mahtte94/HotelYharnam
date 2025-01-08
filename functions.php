@@ -79,11 +79,11 @@ function calculateRoomCost(string $roomType, float $totalDays): float {
   if ($totalDays > 3) {
       switch ($roomType) {
           case 'economy':
-              return round((1 / 0.30) * $totalDays);
+              return round(1 * $totalDays * 0.70);
           case 'standard':
-              return round((2 / 0.30) * $totalDays);
+              return round(2 * $totalDays * 0.70);
           case 'luxury':
-              return round((4 / 0.30) * $totalDays);
+              return round(4 * $totalDays * 0.70);
           default:
               return 0;
       }
