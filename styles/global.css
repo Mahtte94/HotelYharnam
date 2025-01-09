@@ -1,13 +1,14 @@
 :root {
   --primary-color: #4b2626;
   --booked-color: #e74c3c;
-  --available-color: #2ecc71;
+  --todaysDate-color: #2ecc71;
   --background-light: #f8f9fa;
   --text-color: #fff;
   --currentDate-color: #000;
   --background-color: #230000;
   --mainContent-color: #361515;
   --title-color: #fff;
+  --border-color: #ccc;
 }
 
 @font-face {
@@ -23,6 +24,6 @@
 }
 
 body {
-  font-family: "Gothic";
+  font-family: Gothic, sans-serif;
   background-color: var(--background-color);
 }

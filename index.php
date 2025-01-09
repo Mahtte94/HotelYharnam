@@ -9,11 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   exit;
 }
 
-
 require_once __DIR__ . "/header.php";
 ?>
-
-
 
 <main>
   <header class="nav-header">
@@ -138,18 +135,20 @@ require_once __DIR__ . "/header.php";
       <div class="display-cost">
         <span id="total-cost"></span>
       </div>
-      <span id="discount-message" class="discount" style="display: none">You have activated the 30% discount</span>
+      <span id="discount-message" class="discount" style="display: none">You have activated the 30% discount!</span>
       <button type="submit">Book Now</button>
     </div>
 
-    <div class="environment-container">
-      <div class="environment" id="first-environment">
+    <div class="environment-section">
+      <div class="environment-container">
+        <div class="environment active" id="first-environment"></div>
+        <div class="environment" id="second-environment"></div>
+        <div class="environment" id="third-environment"></div>
       </div>
-      <div class="environment" id="second-environment">
-      </div>
-      <div class="environment" id="third-environment">
-      </div>
+      <p class="discount-text">Book more than 3 days to get 30%°!(features excluded)</p>
     </div>
+
+
   </form>
 </main>
 
