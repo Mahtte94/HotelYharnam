@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $user = "Mahtias";
   $island = "Yharnam";
   $hotel = "Hotel Yharnam";
-  $stars = 3;
+  $stars = 4;
   $greeting = "Thank you for choosing Hotel Yharnam";
   $img = "https://www.well-played.com.au/wp-content/uploads/2021/01/Bloodborne-keyart1.jpg";
   $totalCost = 0;
