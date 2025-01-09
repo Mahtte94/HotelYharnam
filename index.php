@@ -17,6 +17,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <header class="nav-header">
     <nav class="navbar">
       <h1>Hotel Yharnam</h1>
+      <span
+        class="star">★
+      </span>
+      <span
+        class="star">★
+      </span>
+      <span
+        class="star">★
+      </span>
+      <span
+        class="star">★
+      </span>
+
     </nav>
   </header>
 

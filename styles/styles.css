@@ -8,15 +8,27 @@
 }
 
 .navbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   max-width: 1500px;
   width: 90%;
   margin: 0 auto;
+  gap: 20px;
 }
 
 h1 {
   color: var(--title-color);
   font-size: 4em;
 }
+
+.star {
+  font-size: 2rem;
+  color: var(--title-color);
+  
+}
+
+
 
 .hero {
   position: relative;
@@ -59,7 +71,7 @@ h1 {
 
 .hero h2 {
   position: relative;
-  color: #8f0202;
+  color: var(--heroText-color);
   z-index: 5;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   font-size: 4rem;
