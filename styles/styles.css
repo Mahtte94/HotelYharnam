@@ -302,6 +302,7 @@ button:hover {
   margin-top: 35px;
   text-align: center;
   gap: 2rem;
+  contain: layout;
 }
 
 /* FOOTER */

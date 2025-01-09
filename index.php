@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . "/header.php";
 require __DIR__ . "/functions.php";
 require __DIR__ . "/booking.php";
 
@@ -9,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   exit;
 }
 
-require_once __DIR__ . "/header.php";
+
 ?>
 
 <main>
