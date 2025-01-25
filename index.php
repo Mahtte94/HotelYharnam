@@ -65,37 +65,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php foreach ($calendars as $roomType => $calendar): ?>
       <div class="calendar">
         <h2><?php echo ucfirst($roomType); ?> Room Calendar</h2>
-        <table>
-          <thead>
-            <tr>
-              <?php foreach ($calendar['header']['weekdays'] as $weekday): ?>
-                <th><?php echo $weekday; ?></th>
-              <?php endforeach; ?>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <?php
-              $counter = 0;
-              foreach ($calendar['days'] as $day):
-                if ($counter % 7 == 0 && $counter != 0): ?>
-            </tr>
-            <tr>
-            <?php endif; ?>
-            <td class="<?php
-                        echo $day['isToday'] ? 'today' : '';
-                        echo $day['isBooked'] ? ' booked' : '';
-                        ?>">
+        <div class="calendar-grid">
+          <?php
+          $counter = 0;
+          foreach ($calendar['header']['weekdays'] as $weekday): ?>
+            <div class="weekday-header"><?php echo $weekday; ?></div>
+          <?php endforeach;
+
+          foreach ($calendar['days'] as $day):
+            $classes = [];
+            if ($day['isToday']) $classes[] = 'today';
+            if ($day['isBooked']) $classes[] = 'booked';
+          ?>
+            <div class="calendar-day <?php echo implode(' ', $classes); ?>">
               <?php echo $day['day']; ?>
-            </td>
-            <?php $counter++; ?>
+            </div>
           <?php endforeach; ?>
-            </tr>
-          </tbody>
-        </table>
+        </div>
       </div>
     <?php endforeach; ?>
   </div>
+
 
   <form method="POST" action="database.php">
 

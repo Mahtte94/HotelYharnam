@@ -120,7 +120,6 @@ h1 {
   max-width: 1500px;
   margin: 0 auto;
 }
-
 .calendar {
   border: 1px solid var(--border-color);
   padding: 10px;
@@ -128,25 +127,30 @@ h1 {
   max-width: 475px;
   border-radius: 10px;
 }
-
-table {
-  border-collapse: collapse;
-  width: 100%;
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
   font-size: 1.5rem;
 }
-
-td,
-th {
+.weekday-header {
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid var(--border-color);
+  padding: 5px;
+}
+.calendar-day {
   border: 1px solid var(--border-color);
   padding: 5px;
   text-align: center;
   height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 .today {
   border: 5px solid var(--todaysDate-color);
 }
-
 .booked {
   background-color: var(--booked-color);
   color: var(--text-color);
