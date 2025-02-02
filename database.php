@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $stars = 4;
   $greeting = "Thank you for choosing Hotel Yharnam";
   $img = "https://www.well-played.com.au/wp-content/uploads/2021/01/Bloodborne-keyart1.jpg";
-  $totalCost = 0;
+  $featureCost = 0;
 
   $jsonOutput = '';
   $successMessage = '';
@@ -47,6 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $roomType = $_POST['rooms'];
   $roomCost = calculateRoomCost($roomType, $totalDays);
 
+  if (isset($features)) {
+    foreach ($features as $feature) {
+        list($featureName, $featurePrice) = explode(':', $feature);
+        $featureCost += $featurePrice;
+    }
+}
+$totalCost = $roomCost + $featureCost + $totalDays;
+
 
   $data = [
     'island' => $island,
@@ -55,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     'departure-date' => $departureDate,
     'total-cost' => $totalCost,
     'stars' =>  $stars,
-    'features' => [],
+    'features' => $features,
     'additional-info' => [
       'greeting' => $greeting,
       'imageUrl' => $img
@@ -63,27 +71,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   ];
 
 
-  if (isset($_POST['features'])) {
-    foreach ($_POST['features'] as $feature) {
-      list($name, $cost) = explode(":", $feature);
-      $data['features'][] = ["name" => $name, "cost" => $cost];
-      $totalCost += $cost;
-    }
-  }
-
-  $data["total-cost"] = $totalCost + $roomCost;
+  $data["total-cost"] = $totalCost;
   $json = json_encode($data, JSON_PRETTY_PRINT);
 
 
-  $stmt = $database->prepare("SELECT id FROM Rooms WHERE name = :name");
-  $stmt->execute([':name' => $roomType]);
-  $roomId = $stmt->fetchColumn();
+  
 
   if (isRoomAvailable($database, $roomType, $arrivalDate, $departureDate)) {
 
     if (!isValidUuid($transferCode)) {
 
-      $jsonResponse = json_encode(['error' => 'Not valid transfercode or not enough balance']);
+      $jsonResponse = json_encode(['error' => 'Not valid transfercode']);
     } else {
 
       $balance = sendTransferRequest($transferCode, $totalCost);
@@ -106,45 +104,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':customerId' => $customerId,
           ]);
           $bookingId = $database->lastInsertId();
+          
+          
 
-          // Insert room
-          $stmt = $database->prepare("INSERT INTO Rooms (name, price) VALUES (:name, :price)");
-          $roomPrice = calculateRoomCost($roomType, $totalDays);
-          $stmt->execute([
-            ':name' => $roomType,
-            ':price' => $roomPrice
-          ]);
-          $roomId = $database->lastInsertId();
-
+          $stmt = $database->prepare("SELECT id FROM Rooms WHERE name = :name");
+          $stmt->execute([':name' => $roomType]);
+          $roomId = $stmt->fetchColumn();
+          
+          
 
           // Insert Booking-Rooms relation
-          $stmt = $database->prepare("INSERT INTO Booking_Rooms (bookingId, roomId, price) VALUES (:bookingId, :roomId, :price)");
+          $stmt = $database->prepare("INSERT INTO Booking_Rooms (bookingId, roomId) VALUES (:bookingId, :roomId)");
           $stmt->execute([
             ':bookingId' => $bookingId,
-            ':roomId' => $roomId,
-            ':price' => $roomCost
+            ':roomId' => $roomId
           ]);
 
 
-          if (isset($features)) {
+          
+            
             foreach ($features as $feature) {
-              list($name, $cost) = explode(":", $feature);
-              $stmt = $database->prepare("INSERT INTO Features (name, price) VALUES (:name, :price)");
-              $stmt->execute([
-                ':name' => $name,
-                ':price' => $cost
-              ]);
-              $featureId = $database->lastInsertId();
+              list($featureName, $featurePrice) = explode(':', $feature);
+
+              // Fetch featureId based on featureName
+              $stmt = $database->prepare("SELECT id FROM Features WHERE name = :name");
+              $stmt->execute([':name' => $featureName]);
+              $featureId = $stmt->fetchColumn();
 
               // Insert Booking-Features relation
-              $stmt = $database->prepare("INSERT INTO Booking_Features (bookingId, featureId, price) VALUES (:bookingId, :featureId, :price)");
+              $stmt = $database->prepare("INSERT INTO Booking_Features (bookingId, featureId) VALUES (:bookingId, :featureId)");
               $stmt->execute([
                 ':bookingId' => $bookingId,
-                ':featureId' => $featureId,
-                ':price' => $cost
+                ':featureId' => $featureId
               ]);
-            }
+            
           }
+        
 
           $jsonOutput = $json;
           $successMessage = "Booking completed successfully!";

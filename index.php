@@ -2,8 +2,9 @@
 require __DIR__ . "/header.php";
 require __DIR__ . "/functions.php";
 require __DIR__ . "/booking.php";
+require __DIR__ . "/db_connect.php";
 
-$database = new PDO('sqlite:hotel.db');
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   require __DIR__ . "/database.php";
@@ -32,30 +33,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </section>
 
 
-  <article class="rooms-container">
-    <div class="room">
-      <img src="images/budget.jpeg" alt="Budget Room">
-      <div class="room-content">
-        <h3>Economy Room</h3>
-        <p>Bare essentials and creeping dread. Survival is not guaranteed, but the key is yours.</p>
-      </div>
-    </div>
-    <div class="room">
-      <img src="images/standard.jpeg" alt="Standard Room">
-      <div class="room-content">
-        <h3>Standard Room</h3>
-        <p>Modest comfort with a touch of unease. The walls may whisper, but rest is possible—if you’re brave enough.</p>
-      </div>
-    </div>
-    <div class="room">
-      <img src="images/luxury.jpeg" alt="Luxury Room">
-      <div class="room-content">
-        <h3>Luxury Room</h3>
-        <p>Lavish and perilous. Shadows covet your comfort as much as your sanity.</p>
-      </div>
-    </div>
-  </article>
 
+  <article class="rooms-container">
+    <?php foreach ($rooms as $room): ?>
+      <div class="room">
+        <img src="images/<?= htmlspecialchars($room['name']) ?>.jpeg" alt="<?= htmlspecialchars($room['name']) ?> Room">
+        <div class="room-content">
+          <h3><?= htmlspecialchars($room['name']) ?></h3>
+          
+          <p><?= htmlspecialchars($room['description']) ?></p>
+        </div>
+      </div>
+    <?php endforeach; ?>
+</article>
+    
   <?php
   // Generate and display calendars
   $calendars = generateAllCalendars($database);
@@ -104,25 +95,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </select>
 
       <div class="border-features">
-        <h3>Features</h3>
-        <label for="features-container" class="features-container">
-          <input type="checkbox" class="feature-checkbox" data-cost="2" id="guns" name="features[]" value="guns:2">
-          <label for="guns">Guns ($2)</label>
-
-          <input type="checkbox" class="feature-checkbox" data-cost="3" id="rifle" name="features[]" value="rifle:3">
-          <label for="rifle">Rifle ($3)</label>
-
-          <input type="checkbox" class="feature-checkbox" data-cost="1" id="yatzy" name="features[]" value="yatzy:1">
-          <label for="yatzy">Yatzy($1)</label>
-
-          <input type="checkbox" class="feature-checkbox" data-cost="3" id="waterboiler" name="features[]" value="waterboiler:3">
-          <label for="waterboiler">Waterboiler ($3)</label>
-
-          <input type="checkbox" class="feature-checkbox" data-cost="8" id="unicycle" name="features[]" value="unicycle:8">
-          <label for="unicycle">Unicycle ($8)</label>
-
-        </label>
-      </div>
+    <h3>Features</h3>
+    <div class="features-container">
+        <?php foreach ($features as $feature): ?>
+            <input type="checkbox" class="feature-checkbox" 
+                   data-cost="<?= htmlspecialchars($feature['price']) ?>" 
+                   id="feature-<?= htmlspecialchars($feature['id']) ?>" 
+                   name="features[]" 
+                   value="<?= htmlspecialchars($feature['name']) . ':' . htmlspecialchars($feature['price']) ?>">
+            <label for="feature-<?= htmlspecialchars($feature['id']) ?>">
+                <?= htmlspecialchars($feature['name']) ?> ($<?= htmlspecialchars($feature['price']) ?>)
+            </label>
+        <?php endforeach; ?>
+    </div>
+</div>
 
       <h4>Transfer Code</h4>
       <input type="text" id="transfer-code" name="transfer-code" required>

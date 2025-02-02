@@ -10,7 +10,7 @@ function isValidUuid(string $uuid): bool
   return true;
 }
 
-function sendTransferRequest(string $transferCode, int $totalCost): int
+function sendTransferRequest(string $transferCode, float $totalCost): int
 {
   $url = "https://www.yrgopelago.se/centralbank/transferCode";
 
@@ -76,27 +76,20 @@ function depositTransfer(string $user, string $transferCode): string
 }
 
 function calculateRoomCost(string $roomType, float $totalDays): float {
+  $cost = 0;
+  switch ($roomType) {
+      case 'economy':
+          $cost = 1 * $totalDays;
+      case 'standard':
+          $cost = 2 * $totalDays;
+      case 'luxury':
+          $cost = 4 * $totalDays;
+      default:
+          $cost = 0;
+
   if ($totalDays > 3) {
-      switch ($roomType) {
-          case 'economy':
-              return round(1 * $totalDays * 0.70);
-          case 'standard':
-              return round(2 * $totalDays * 0.70);
-          case 'luxury':
-              return round(4 * $totalDays * 0.70);
-          default:
-              return 0;
-      }
-  } else {
-      switch ($roomType) {
-          case 'economy':
-              return 1 * $totalDays;
-          case 'standard':
-              return 2 * $totalDays;
-          case 'luxury':
-              return 4 * $totalDays;
-          default:
-              return 0;
-      }
+      $cost = round($cost * 0.7);
   }
+  return $cost;
+}
 }
